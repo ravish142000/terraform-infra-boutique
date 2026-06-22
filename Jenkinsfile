@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+   parameters {
+        choice(name: 'ENVIRONMENT', choices: ['dev','prod'], description: 'Select the environment to deploy')
+    }
 
     stages {
         stage('checkout') {
@@ -14,21 +18,21 @@ pipeline {
         }
         stage('Terraform initialization') {
             steps {
-                dir('envs/dev') {
+                dir("envs/${params.ENVIRONMENT}") {
                     sh 'terraform init'
                 }
             }
         }
         stage('Terraform validation') {
             steps {
-                dir('envs/dev') {
+                dir("envs/${params.ENVIRONMENT}") {
                     sh 'terraform validate'
                 }
             }
         }
         stage('Terraform plan') {
             steps {
-                dir('envs/dev') {
+                dir("envs/${params.ENVIRONMENT}") {
                     sh 'terraform plan -out=tfplan'
                 }
             }
@@ -41,7 +45,7 @@ pipeline {
 
         stage('Terraform apply') {
             steps {
-                dir('envs/dev') {
+                dir("envs/${params.ENVIRONMENT}") {
                     sh 'terraform apply tfplan'
                 }
             }
