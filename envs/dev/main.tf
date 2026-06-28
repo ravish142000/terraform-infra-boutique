@@ -20,19 +20,3 @@ module "eks" {
 
 }
 
-module "ecr" {
-  source = "../../modules/ecr"
-
-  ecr_repository_names = [
-    "frontend",
-    "productcatalogservice",
-    "cartservice",
-    "checkoutservice",
-    "paymentservice",
-    "emailservice",
-    "shippingservice",
-    "currencyservice",
-    "recommendationservice",
-    "adservice"
-  ]
-}
