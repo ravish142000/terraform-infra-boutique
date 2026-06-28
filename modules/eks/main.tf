@@ -3,7 +3,8 @@ resource "aws_eks_cluster" "main_eks_cluster" {
   name = "${var.environment}-eks-cluster"
 
   access_config {
-    authentication_mode = "API"
+    authentication_mode                         = "API_AND_CONFIG_MAP"
+    bootstrap_cluster_creator_admin_permissions = true
   }
 
   role_arn = aws_iam_role.cluster_role.arn
@@ -99,22 +100,3 @@ resource "aws_eks_node_group" "node_group" {
   ]
 }
 
-resource "aws_eks_access_entry" "admin" {
-  cluster_name  = aws_eks_cluster.main_eks_cluster.name
-  principal_arn = var.admin_principal_arn
-  type          = "STANDARD"
-}
-
-resource "aws_eks_access_policy_association" "admin" {
-  cluster_name  = aws_eks_cluster.main_eks_cluster.name
-  principal_arn = var.admin_principal_arn
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-
-  access_scope {
-    type = "cluster"
-  }
-
-  depends_on = [
-    aws_eks_access_entry.admin
-  ]
-}

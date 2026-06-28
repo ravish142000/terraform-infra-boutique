@@ -31,6 +31,3 @@ variable "node_group_min_size" {
   type        = number
 }
 
-variable "admin_principal_arn" {
-  type = string
-}
