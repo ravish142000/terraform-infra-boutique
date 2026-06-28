@@ -30,3 +30,7 @@ variable "node_group_min_size" {
   description = "The minimum number of worker nodes for the EKS node group"
   type        = number
 }
+
+variable "admin_principal_arn" {
+  type = string
+}
